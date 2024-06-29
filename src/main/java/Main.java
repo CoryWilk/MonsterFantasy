@@ -1,3 +1,5 @@
+import base.GamePanel;
+
 import javax.swing.*;
 
 public class Main {
