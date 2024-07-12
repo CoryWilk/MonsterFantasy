@@ -23,18 +23,21 @@ public class GamePanel extends JPanel implements Runnable{
     // WORLD SETTINGS
     public final int maxWorldCol = 50;
     public final int maxWorldRow = 50;
-    public final int worldWidth = tileSize * maxWorldCol;
-    public final int worldHeight = tileSize * maxWorldRow;
 
     // FPS
     int FPS = 60;
 
+    // SYSTEM
     TileManager tileM = new TileManager(this);
-
     KeyHandler keyH = new KeyHandler();
-    Thread gameThread;
+    Sound se = new Sound();
+    Sound music = new Sound();
     public CollisionChecker cChecker = new CollisionChecker(this);
     public AssetSetter aSetter = new AssetSetter(this);
+    public UI ui = new UI(this);
+    Thread gameThread;
+
+    // ENTITY AND OBJECT
     public Player player = new Player(this, keyH);
     public SuperObject[] obj = new SuperObject[10];
 
@@ -49,7 +52,9 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void setupGame() {
+
         aSetter.setObject();
+        playMusic(0);
     }
 
     public void startGameThread() {
@@ -57,39 +62,9 @@ public class GamePanel extends JPanel implements Runnable{
         gameThread.start();
     }
 
-//    @Override
-//    public void run() {
-//
-//        double drawInterval = 1000000000/FPS; // 0.166666 seconds
-//        double nextDrawTime = System.nanoTime() + drawInterval;
-//
-//        while (gameThread != null) {
-//            // 1. UPDATE: update information such as character position
-//                update();
-//            // 2. DRAW: draw the screen with updated information
-//                repaint();
-//
-//            try {
-//                double remainingTime = nextDrawTime - System.nanoTime();
-//                remainingTime = remainingTime/1000000;
-//
-//                if (remainingTime < 0) {
-//                    remainingTime = 0;
-//                }
-//
-//                Thread.sleep((long) remainingTime);
-//
-//                nextDrawTime += drawInterval;
-//
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//    }
-
     @Override
     public void run() {
-        double drawInterval = 1000000000/FPS;
+        double drawInterval = (double) 1000000000 /FPS;
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
@@ -129,15 +104,35 @@ public class GamePanel extends JPanel implements Runnable{
 
         // TILE
         tileM.draw(g2);
+
         // OBJECT
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i] != null) {
-                obj[i].draw(g2, this);
+        for (SuperObject superObject : obj) {
+            if (superObject != null) {
+                superObject.draw(g2, this);
             }
         }
         //PLAYER
         player.draw(g2);
 
+        // UI
+        ui.draw(g2);
+
         g2.dispose();
     }
+
+    public void playMusic(int i) {
+        music.setFile(i);
+        music.play();
+        music.loop();
+    }
+
+    public void stopMusic() {
+        music.stop();
+    }
+
+    public void playSE(int i) {
+        se.setFile(i);
+        se.play();
+    }
+
 }
