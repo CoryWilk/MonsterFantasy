@@ -17,6 +17,7 @@ public class Player extends Entity {
     public final int screenY;
 
     public int hasKey = 0;
+    int standCount = 1;
 
     public Player(GamePanel gp, KeyHandler keyH) {
         this.gp = gp;
@@ -117,6 +118,13 @@ public class Player extends Entity {
                 spriteCounter = 0;
             }
         }
+        else {
+            standCount++;
+            if (standCount == 20) {
+                spriteNum = 1;
+                standCount = 0;
+            }
+        }
     }
 
     public void pickUpObject(int i) {
@@ -195,6 +203,10 @@ public class Player extends Entity {
                 break;
         }
         g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+
+        // VISUALISE COLLISION BOX FOR CHARACTER
+//        g2.setColor(Color.RED);
+//        g2.drawRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
     }
 
 }
