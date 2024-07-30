@@ -1,14 +1,15 @@
 package base;
-import object.OBJ_Key;
 
 import java.awt.*;
-import java.text.DecimalFormat;
+import java.io.IOException;
+import java.io.InputStream;
+
 
 public class UI {
 
     GamePanel gp;
     Graphics2D g2;
-    Font arial_40, arial_80B;
+    Font arcade;
 
     public boolean messageOn = false;
     public String message = "";
@@ -17,11 +18,14 @@ public class UI {
     public String currentDialogue = "";
 
 
-    public UI(GamePanel gp) {
+    public UI(GamePanel gp) throws IOException, FontFormatException {
         this.gp = gp;
-        arial_40 = new Font("Arial", Font.PLAIN, 40);
-        arial_80B = new Font("Arial", Font.BOLD, 60);
-
+        try {
+            InputStream is = getClass().getResourceAsStream("/font/ARCADE.TTF");
+            arcade = Font.createFont(Font.TRUETYPE_FONT, is);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void showMessage(String text) {
@@ -32,7 +36,7 @@ public class UI {
     public void draw(Graphics2D g2) {
         this.g2 = g2;
 
-        g2.setFont(arial_40);
+        g2.setFont(arcade);
         g2.setColor(Color.WHITE);
     // PLAY STATE
         if (gp.gameState == gp.playState) {
@@ -65,8 +69,8 @@ public class UI {
         int height = gp.tileSize * 4;
         drawSubWindow(x, y, width, height);
 
-        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 28));
-        x += gp.tileSize;
+        g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 40));
+        x += gp.tileSize / 2;
         y += gp.tileSize;
 
         for (String line : currentDialogue.split("\n")) {
