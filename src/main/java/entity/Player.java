@@ -208,11 +208,20 @@ public class Player extends Entity {
                 }
                 break;
         }
+
+        if (invincible) {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+        }
+
         g2.drawImage(image, screenX, screenY, null);
 
+        // RESET ALPHA
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
+
         // DEBUG
-        g2.setFont(new Font("Arial", Font.PLAIN, 26));
-        g2.setColor(Color.WHITE);
-        g2.drawString("Invincible: " + invincibleCounter, 10, 400);
+//        g2.setFont(new Font("Arial", Font.PLAIN, 26));
+//        g2.setColor(Color.WHITE);
+//        g2.drawString("Invincible: " + invincibleCounter, 10, 400);
     }
 }
