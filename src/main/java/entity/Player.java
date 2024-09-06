@@ -2,13 +2,9 @@ package entity;
 
 import base.GamePanel;
 import base.KeyHandler;
-import base.UtilityTool;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
 
 public class Player extends Entity {
     KeyHandler keyH;
@@ -60,7 +56,7 @@ public class Player extends Entity {
 
     public void update() {
 
-        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed) {
+        if (keyH.upPressed || keyH.downPressed || keyH.leftPressed || keyH.rightPressed || keyH.enterPressed) {
 
             if (keyH.upPressed) {
                 direction = "up";
@@ -71,7 +67,7 @@ public class Player extends Entity {
             else if (keyH.leftPressed) {
                 direction = "left";
             }
-            else {
+            else if (keyH.rightPressed){
                 direction = "right";
             }
 
@@ -94,10 +90,10 @@ public class Player extends Entity {
             // CHECK EVENT
             gp.eHandler.checkEvent();
 
-            gp.keyH.enterPressed = false;
+
 
             //IF COLLISION IS FALSE, PLAYER CAN MOVE
-            if (!collisionOn) {
+            if (!collisionOn && !keyH.enterPressed) {
                 switch(direction) {
                     case "up":
                         worldY -= speed;
@@ -113,6 +109,8 @@ public class Player extends Entity {
                         break;
                 }
             }
+
+            gp.keyH.enterPressed = false;
 
             spriteCounter ++;
 
